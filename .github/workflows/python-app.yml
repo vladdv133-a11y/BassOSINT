@@ -1,0 +1,33 @@
+@'
+name: BassOSINT CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+
+    - name: Install dependencies
+      run: |
+        poetry install --no-root
+
+    - name: Check Syntax
+      run: |
+        poetry run python -m py_compile BassOSINT.py
+'@ | Out-File -FilePath .github\workflows\python-app.yml -Encoding utf8
